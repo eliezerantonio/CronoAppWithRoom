@@ -24,20 +24,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.cronoapp_e_room.R
 import com.example.cronoapp_e_room.components.CircleButton
 import com.example.cronoapp_e_room.components.FloatButton
 import com.example.cronoapp_e_room.components.MainIconButton
+import com.example.cronoapp_e_room.components.MainTextField
 import com.example.cronoapp_e_room.components.MainTitle
 import com.example.cronoapp_e_room.components.formatTime
+import com.example.cronoapp_e_room.model.Cronos
 import com.example.cronoapp_e_room.viewModels.CronometroViewModel
+import com.example.cronoapp_e_room.viewModels.CronosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddView(navController: NavController, cronometroViewModel: CronometroViewModel) {
+fun AddView(
+    navController: NavController,
+    cronometroViewModel: CronometroViewModel,
+    cronoViewModel: CronosViewModel
+) {
 
     Scaffold(
         topBar = {
@@ -59,7 +69,7 @@ fun AddView(navController: NavController, cronometroViewModel: CronometroViewMod
             }
         }
     ) {
-        ContentAddView(it, navController, cronometroViewModel)
+        ContentAddView(it, navController, cronometroViewModel, cronoViewModel)
     }
 
 
@@ -70,6 +80,7 @@ fun ContentAddView(
     it: PaddingValues,
     navController: NavController,
     cronometroViewModel: CronometroViewModel,
+    cronoViewModel: CronosViewModel
 ) {
     val state = cronometroViewModel.state
 
@@ -97,22 +108,37 @@ fun ContentAddView(
             modifier = Modifier.padding(vertical = 16.dp)
         ) {
 
-            CircleButton(icon = Icons.Default.PlayArrow, enabled = !state.activeCrono) {
+            CircleButton(icon = painterResource(R.drawable.play), enabled = !state.activeCrono) {
                 cronometroViewModel.init()
             }
             //*pausar
-            CircleButton(icon = Icons.Default.Clear, enabled = state.activeCrono) {
+            CircleButton(icon = painterResource(R.drawable.pausa), enabled = state.activeCrono) {
                 cronometroViewModel.pause()
             }
             //detener
-            CircleButton(icon = Icons.Default.AccountCircle, enabled = !state.activeCrono) {
+            CircleButton(icon = painterResource(R.drawable.stop), enabled = !state.activeCrono) {
                 cronometroViewModel.delete()
             }
             //mostrar guardar
-            CircleButton(icon = Icons.Default.PlayArrow, enabled = state.showSaveButton) {
+            CircleButton(icon = painterResource(R.drawable.save), enabled = state.showSaveButton) {
                 cronometroViewModel.showTextField()
             }
 
+        }
+
+        if (state.showTextField) {
+            MainTextField(
+                state.title,
+                onValueChange = { cronometroViewModel.onValue(it) },
+                label = "Title"
+            )
+
+            Button(onClick = {
+                cronoViewModel.addCrono(Cronos(title = state.title, crono = cronometroViewModel.time))
+
+                cronometroViewModel.delete()
+                navController.popBackStack()
+            }) { Text("Guardar") }
         }
 
 

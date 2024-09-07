@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposableOpenTarget
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
@@ -39,7 +40,7 @@ fun MainIconButton(icon: ImageVector, onClick: () -> Unit) {
 }
 
 @Composable
-fun CircleButton(icon: ImageVector, enabled: Boolean = false, onClick: () -> Unit) {
+fun CircleButton(icon: Painter, enabled: Boolean = false, onClick: () -> Unit) {
 
     Button(
         onClick = onClick,
@@ -48,6 +49,6 @@ fun CircleButton(icon: ImageVector, enabled: Boolean = false, onClick: () -> Uni
         enabled = enabled,
         modifier = Modifier.padding(horizontal = 14.dp)
     ) {
-        Icon(imageVector = icon, contentDescription = "", modifier = Modifier.size(24.dp))
+        Icon(painter = icon, contentDescription = "", modifier = Modifier.size(24.dp))
     }
 }

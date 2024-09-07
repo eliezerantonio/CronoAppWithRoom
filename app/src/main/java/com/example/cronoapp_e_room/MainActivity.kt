@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.cronoapp_e_room.navigation.NavManager
 import com.example.cronoapp_e_room.ui.theme.CronoAppeRoomTheme
 import com.example.cronoapp_e_room.viewModels.CronometroViewModel
+import com.example.cronoapp_e_room.viewModels.CronosViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,10 +25,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val cronometroVM: CronometroViewModel by viewModels()
+        val cronosVm: CronosViewModel by viewModels()
         enableEdgeToEdge()
         setContent {
             CronoAppeRoomTheme {
-                NavManager(cronometroVM)
+                NavManager(cronometroVM, cronosVm)
 
             }
         }
