@@ -33,8 +33,10 @@ class CronometroViewModel @Inject constructor(private val repository: CronosRepo
 
         viewModelScope.launch(Dispatchers.IO) {
             repository.getCronoById(id).collect { item ->
-                time = item.crono
-                state = state.copy(title = item.title,)
+              if(item!=null){
+                  time = item.crono
+                  state = state.copy(title = item.title,)
+              }
             }
         }
 

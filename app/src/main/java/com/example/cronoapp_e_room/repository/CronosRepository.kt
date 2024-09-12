@@ -16,7 +16,7 @@ class CronosRepository @Inject constructor(private val cronosDatabaseDao: Cronos
     }
     suspend fun deleteCrono(crono: Cronos) = cronosDatabaseDao.delete(crono)
     fun getAllCronos(): Flow<List<Cronos>> = cronosDatabaseDao.getCronos().flowOn(Dispatchers.IO).conflate()
-    fun getCronoById(id: Long): Flow<Cronos> = cronosDatabaseDao.getCronosById(id).flowOn(Dispatchers.IO).conflate()
+    fun getCronoById(id: Long): Flow<Cronos?> = cronosDatabaseDao.getCronosById(id).flowOn(Dispatchers.IO).conflate()
 
 
 
